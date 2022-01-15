@@ -1,0 +1,9 @@
+#+TITLE: Doom3MultiHack
+#+AUTHOR: Doğu Us
+A simple internal hack for Doom 3
+** Includes
+ + Ammo Hack
+ + Health Hack
+ + Armor Hack
+** Injection
+I recommend [[https://github.com/master131/ExtremeInjector][Extreme Injector]]
