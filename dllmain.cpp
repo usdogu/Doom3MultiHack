@@ -1,5 +1,4 @@
-﻿// dllmain.cpp : DLL uygulamasının giriş noktasını tanımlar.
-#include "pch.h"
+﻿#include "pch.h"
 #include "mem.h"
 
 DWORD WINAPI HackThread(HMODULE hModule)
@@ -17,23 +16,42 @@ DWORD WINAPI HackThread(HMODULE hModule)
         }
         if (GetAsyncKeyState(VK_NUMPAD1) & 1) {
             bHealth = !bHealth;
+            if (bHealth)
+            {
+                mem::Nop((BYTE*)moduleBase + 0x2F96C5, 6);
+            }
+        	else
+            {
+                // mov [esi + 000000D8], eax
+                mem::Patch((BYTE*)moduleBase + 0x2F96C5,(BYTE*)"\x89\x86\xD8\x00\x00\x00",6);
+            }
         }
         if (GetAsyncKeyState(VK_NUMPAD2) & 1) {
             bArmor = !bArmor;
+            if (bArmor)
+            {
+                mem::Nop((BYTE*)moduleBase + 0x2F9BD3, 6);
+            }
+            else
+            {
+                // sub [esi+000017FC],eax
+                mem::Patch((BYTE*)moduleBase + 0x2F9BD3, (BYTE*)"\x29\x86\xFC\x17\x00\x00", 6);
+            }
 
         }
         if (GetAsyncKeyState(VK_NUMPAD3) & 1) {
             bAmmo = !bAmmo;
-            
+            if (bAmmo)
+            {
+                mem::Nop((BYTE*)moduleBase + 0x32689B, 2);
+            }
+            else
+            {
+                // sub [esi],ecx
+                mem::Patch((BYTE*)moduleBase + 0x32689B, (BYTE*)"\x29\x0e", 2);
+            }
         }
-        if (bAmmo)
-        {
-            mem::Nop((BYTE*)moduleBase + 0x32689B, 2);
-        }
-        else
-        {
-            mem::Patch((BYTE*)moduleBase + 0x32689B, (BYTE*)"\x29\x0e", 2);
-        }
+        
         Sleep(5);
     }
     fclose(f);
